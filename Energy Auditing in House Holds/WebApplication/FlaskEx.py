@@ -4,8 +4,42 @@ import pymysql as MySQLdb
 import json
 from datetime import datetime
 
+import pandas as pd  
+import numpy as np  
+import matplotlib.pyplot as plt  
+from sklearn.model_selection import train_test_split 
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
+
 app = Flask(__name__)
 
+def room_prediction(rooms_co):
+   data=pd.DataFrame(rooms_co)
+   len1=len(rooms_co)
+   data1=data.transpose()
+   x=data1.iloc[0:len1-1]
+   y=data1.iloc[len1]
+   X =data1.iloc[0:len1].reshape(-1,1)
+   y = data1.iloc[len1].reshape(-1,1)	
+   X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.5, random_state=3)
+   regressor = LinearRegression()  
+   regressor.fit(X_train, y_train) #training the algorithm
+   y_pred = regressor.predict(X_test)
+  
+ def month_prediction(months_co):
+   data=pd.DataFrame(months_co)
+   len2=len2(monhs_co)
+   data1=data.transpose()
+   x=data1.iloc[0:len2-1]
+   y=data1.iloc[len2]
+   X =data1.iloc[0:len2-1].reshape(-1,1)
+   y = data1.iloc[len2].reshape(-1,1)	
+   X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0., random_state=3)
+   regressor = LinearRegression()  
+   regressor.fit(X_train, y_train) #training the algorithm
+   y_pred = regressor.predict(X_test)
+
+   
 
 @app.route('/')
 def home():
